@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { run } from "@ember/runloop";
+import { run, bind } from "@ember/runloop";
 
 export default Component.extend({
   classNames: ['ember-content-editable'],
@@ -29,14 +29,14 @@ export default Component.extend({
       39, // right arrow
       40  // down arrow
     ]);
-    this._pasteHandler = run.bind(this, this.pasteHandler);
+    this._pasteHandler = bind(this, this.pasteHandler);
   },
 
   didInsertElement() {
     this._super(...arguments);
 
     this.updateDom();
-    this._mutationObserver = new MutationObserver(run.bind(this, this.domChanged));
+    this._mutationObserver = new MutationObserver(bind(this, this.domChanged));
     this._mutationObserver.observe(this.element, {attributes: false, childList: true, characterData: true, subtree: true});
 
     if (this.autofocus) {
